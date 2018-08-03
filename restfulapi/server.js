@@ -1,31 +1,29 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-var User = require('./models/users');
 var mongoose = require('mongoose');
 
+var db = require('./models/dbconnect');
+var User = require('./models/users');
 
-mongoose.connect('mongodb://localhost/restData');
+
 
 var app = express();
 
-
-
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended : false}));
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({extended : true}));
 
 //pushing data into db
 
 app.post('/', function(req, res) {
     var user = new User();
-    user.username = req.body.name;
+    user.username = req.body.username;
     user.email = req.body.email;
 
     user.save(function(err) {
         if(err){
             throw err;
         }
-        res.json("Pushed Data into db successfully");
+        res.json({"Status" : "Succeeded"});
     });
 });
 
